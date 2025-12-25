@@ -1,0 +1,8 @@
+# AI Digital Product Offer Generator Requirements
+# Python 3.8 or higher recommended
+
+# Optional: For AI-powered generation (enhanced features)
+openai>=0.27.0
+
+# Note: The generator works without OpenAI API key using template-based generation
+# For full AI capabilities, set your OPENAI_API_KEY environment variable
