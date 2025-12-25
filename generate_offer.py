@@ -9,14 +9,23 @@ import json
 from typing import Dict, Optional
 from offer_generator import OfferGenerator
 from templates import OFFER_TEMPLATES
+from config import (
+    APP_NAME,
+    APP_TAGLINE,
+    PREMIUM_URL,
+    DEFAULT_NICHE,
+    DEFAULT_SAVE_FILENAME,
+    BANNER_WIDTH,
+    SECTION_WIDTH
+)
 
 
 def print_banner():
     """Print the application banner."""
-    print("\n" + "="*70)
-    print("   AI DIGITAL PRODUCT OFFER GENERATOR")
-    print("   Turn Ideas Into Sellable Digital Products in Minutes")
-    print("="*70 + "\n")
+    print("\n" + "="*BANNER_WIDTH)
+    print(f"   {APP_NAME.upper()}")
+    print(f"   {APP_TAGLINE}")
+    print("="*BANNER_WIDTH + "\n")
 
 
 def get_user_input(prompt: str, default: Optional[str] = None) -> str:
@@ -54,9 +63,9 @@ def select_template() -> str:
 
 def display_offer(offer: Dict):
     """Display the generated offer in a formatted way."""
-    print("\n" + "="*70)
+    print("\n" + "="*SECTION_WIDTH)
     print("   YOUR DIGITAL PRODUCT OFFER")
-    print("="*70 + "\n")
+    print("="*SECTION_WIDTH + "\n")
     
     sections = [
         ("Product Name", "product_name"),
@@ -74,7 +83,7 @@ def display_offer(offer: Dict):
     for section_name, key in sections:
         if key in offer and offer[key]:
             print(f"\n{section_name}:")
-            print("-" * 70)
+            print("-" * SECTION_WIDTH)
             value = offer[key]
             if isinstance(value, list):
                 for item in value:
@@ -85,7 +94,7 @@ def display_offer(offer: Dict):
             else:
                 print(f"  {value}")
     
-    print("\n" + "="*70 + "\n")
+    print("\n" + "="*SECTION_WIDTH + "\n")
 
 
 def save_offer(offer: Dict, filename: str = "generated_offer.json"):
@@ -110,7 +119,7 @@ def main():
         print("Product idea is required. Exiting.")
         sys.exit(1)
     
-    niche = get_user_input("What's your niche or industry?", "general")
+    niche = get_user_input("What's your niche or industry?", DEFAULT_NICHE)
     target_audience = get_user_input("Who is your target audience? (optional)")
     template_type = select_template()
     
@@ -131,14 +140,14 @@ def main():
     # Ask if user wants to save
     save_choice = get_user_input("Would you like to save this offer? (y/n)", "y").lower()
     if save_choice in ['y', 'yes']:
-        filename = get_user_input("Enter filename", "generated_offer.json")
+        filename = get_user_input("Enter filename", DEFAULT_SAVE_FILENAME)
         if not filename.endswith('.json'):
             filename += '.json'
         save_offer(offer, filename)
     
-    print("\n✨ Thank you for using AI Digital Product Offer Generator!")
+    print(f"\n✨ Thank you for using {APP_NAME}!")
     print("For unlimited generations and premium features, visit:")
-    print("https://plugtowealth.store/digital-product-offer-generator-build-sellable-offers-instantly/\n")
+    print(f"{PREMIUM_URL}\n")
 
 
 if __name__ == "__main__":
