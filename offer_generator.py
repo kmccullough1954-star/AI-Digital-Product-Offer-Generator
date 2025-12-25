@@ -223,23 +223,31 @@ class OfferGenerator:
         
         # Extract a recommended price from the range
         prices = price_range.replace('$', '').replace('+', '').replace(',', '')
+        
+        # Handle "or" in price ranges
+        if ' or ' in prices:
+            prices = prices.split(' or ')[0]
+        
         if '-' in prices:
-            low, high = prices.split('-')
-            try:
-                low_num = int(low.split('/')[0])
-                high_num = int(high.split('/')[0])
-                mid_price = (low_num + high_num) // 2
-                
-                # Round to nice number
-                if mid_price < 100:
-                    rounded = round(mid_price / 10) * 10 - 3  # e.g., 47, 67, 97
-                else:
-                    rounded = round(mid_price / 100) * 100 - 3  # e.g., 297, 497
-                
-                suffix = '/month' if '/month' in price_range else ''
-                return f"${rounded}{suffix}"
-            except:
-                pass
+            parts = prices.split('-')
+            if len(parts) >= 2:
+                low = parts[0]
+                high = parts[1]
+                try:
+                    low_num = int(low.split('/')[0])
+                    high_num = int(high.split('/')[0])
+                    mid_price = (low_num + high_num) // 2
+                    
+                    # Round to nice number
+                    if mid_price < 100:
+                        rounded = round(mid_price / 10) * 10 - 3  # e.g., 47, 67, 97
+                    else:
+                        rounded = round(mid_price / 100) * 100 - 3  # e.g., 297, 497
+                    
+                    suffix = '/month' if '/month' in price_range else ''
+                    return f"${rounded}{suffix}"
+                except:
+                    pass
         
         return price_range.split('-')[0] if '-' in price_range else price_range
     
